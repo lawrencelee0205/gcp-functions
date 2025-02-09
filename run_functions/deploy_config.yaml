@@ -1,0 +1,32 @@
+default_function_configs:
+  region: us-central1
+  runtime: python311
+  memory: 256MB
+  timeout: 300
+  max_instances: 5
+  entry_point: main
+  is_trigger_http: True
+  allow_unauthenticated: False
+  is_gen_two: True
+  include_files:
+    - shared/__init__.py
+
+functions:
+  - name: greeting
+    source: greeting_fn
+    allow_unauthenticated: True
+    include_files:
+      - shared/common.py
+
+  - name: get-area
+    source: calculation/get_area_fn
+    allow_unauthenticated: True
+    include_dirs:
+      - shared/calculation
+    include_files:
+      - shared/__init__.py
+
+# Comment the functions to avoid deployment
+functions_to_deploy:
+  - greeting
+  # - get-area
